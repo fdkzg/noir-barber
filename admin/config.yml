@@ -2,3 +2,26 @@ backend:
   name: github
   repo: fdkzg/noir-barber
   branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "content"
+    label: "Website Content"
+    files:
+      - file: "content/site.yml"
+        label: "Site Content"
+        name: "site"
+        fields:
+          - label: "Business Name"
+            name: "business_name"
+            widget: "string"
+
+          - label: "Hero Title"
+            name: "hero_title"
+            widget: "string"
+
+          - label: "Hero Text"
+            name: "hero_text"
+            widget: "text"
