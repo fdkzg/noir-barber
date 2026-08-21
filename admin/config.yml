@@ -7,16 +7,33 @@ media_folder: "images"
 public_folder: "/images"
 
 collections:
+
+  # =========================
+  # WEBSITE CONTENT
+  # =========================
+
   - name: "content"
     label: "Website Content"
     files:
+
       - file: "content/site.yml"
         label: "Site Content"
         name: "site"
+
         fields:
+
+          # =========================
+          # BUSINESS
+          # =========================
+
           - label: "Business Name"
             name: "business_name"
             widget: "string"
+
+
+          # =========================
+          # HERO
+          # =========================
 
           - label: "Hero Title"
             name: "hero_title"
@@ -26,20 +43,67 @@ collections:
             name: "hero_text"
             widget: "text"
 
-  - name: "services"
-    label: "Services"
-    folder: "content/services"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - label: "Service Name"
-        name: "name"
-        widget: "string"
 
-      - label: "Description"
-        name: "description"
-        widget: "text"
+          # =========================
+          # SERVICES
+          # =========================
 
-      - label: "Price"
-        name: "price"
-        widget: "string"
+          - label: "Services"
+            name: "services"
+            widget: "list"
+
+            fields:
+
+              - label: "Service Name"
+                name: "name"
+                widget: "string"
+
+              - label: "Description"
+                name: "description"
+                widget: "text"
+
+              - label: "Price"
+                name: "price"
+                widget: "string"
+
+
+          # =========================
+          # TEAM
+          # =========================
+
+          - label: "Barbers"
+            name: "team"
+            widget: "list"
+
+            fields:
+
+              - label: "Name"
+                name: "name"
+                widget: "string"
+
+              - label: "Role"
+                name: "role"
+                widget: "string"
+
+              - label: "Photo"
+                name: "image"
+                widget: "image"
+
+
+          # =========================
+          # GALLERY
+          # =========================
+
+          - label: "Gallery"
+            name: "gallery"
+            widget: "list"
+
+            fields:
+
+              - label: "Image"
+                name: "image"
+                widget: "image"
+
+              - label: "Image Description"
+                name: "alt"
+                widget: "string"
