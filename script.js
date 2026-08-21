@@ -16,11 +16,9 @@ if (menuToggle && navLinks) {
     menuToggle.addEventListener("click", () => {
 
         navLinks.classList.toggle("active");
-
         document.body.classList.toggle("menu-open");
 
     });
-
 
     const links = navLinks.querySelectorAll("a");
 
@@ -42,39 +40,34 @@ if (menuToggle && navLinks) {
 // SCROLL REVEAL
 // =========================
 
-function setupReveal() {
+const revealElements = document.querySelectorAll(".reveal");
 
-    const revealElements = document.querySelectorAll(".reveal");
+const revealObserver = new IntersectionObserver(
+    (entries) => {
 
-    const revealObserver = new IntersectionObserver(
-        (entries) => {
+        entries.forEach(entry => {
 
-            entries.forEach(entry => {
+            if (entry.isIntersecting) {
 
-                if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
 
-                    entry.target.classList.add("visible");
+                revealObserver.unobserve(entry.target);
 
-                    revealObserver.unobserve(entry.target);
+            }
 
-                }
+        });
 
-            });
+    },
+    {
+        threshold: 0.15
+    }
+);
 
-        },
-        {
-            threshold: 0.15
-        }
-    );
+revealElements.forEach(element => {
 
+    revealObserver.observe(element);
 
-    revealElements.forEach(element => {
-
-        revealObserver.observe(element);
-
-    });
-
-}
+});
 
 
 // =========================
@@ -91,32 +84,31 @@ if (year) {
 
 
 // =========================
-// CMS CONTENT
+// CMS CONTENT LOADER
 // =========================
 
 async function loadCMSContent() {
 
     try {
 
-        // -------------------------
-        // WEBSITE CONTENT
-        // -------------------------
+        const response = await fetch(
+            "content/site.yml?v=" + Date.now()
+        );
 
-        const siteResponse =
-            await fetch("content/site.yml?v=" + Date.now());
-
-        if (!siteResponse.ok) {
-
-            throw new Error("Could not load site CMS content.");
-
+        if (!response.ok) {
+            throw new Error("Could not load CMS content.");
         }
 
-        const siteYaml = await siteResponse.text();
+        const yaml = await response.text();
 
+
+        // =========================
+        // SIMPLE YAML VALUE READER
+        // =========================
 
         function getValue(key) {
 
-            const line = siteYaml
+            const line = yaml
                 .split("\n")
                 .find(line =>
                     line.trim().startsWith(key + ":")
@@ -132,10 +124,49 @@ async function loadCMSContent() {
         }
 
 
+        // =========================
+        // BUSINESS INFORMATION
+        // =========================
+
         const businessName = getValue("business_name");
+
+
+        // =========================
+        // HERO
+        // =========================
+
         const heroTitle = getValue("hero_title");
         const heroText = getValue("hero_text");
 
+
+        // =========================
+        // SERVICES
+        // =========================
+
+        const service1Name = getValue("service_1_name");
+        const service1Description = getValue("service_1_description");
+        const service1Price = getValue("service_1_price");
+
+        const service2Name = getValue("service_2_name");
+        const service2Description = getValue("service_2_description");
+        const service2Price = getValue("service_2_price");
+
+        const service3Name = getValue("service_3_name");
+        const service3Description = getValue("service_3_description");
+        const service3Price = getValue("service_3_price");
+
+        const service4Name = getValue("service_4_name");
+        const service4Description = getValue("service_4_description");
+        const service4Price = getValue("service_4_price");
+
+        const service5Name = getValue("service_5_name");
+        const service5Description = getValue("service_5_description");
+        const service5Price = getValue("service_5_price");
+
+
+        // =========================
+        // UPDATE BUSINESS NAME
+        // =========================
 
         if (businessName) {
 
@@ -143,13 +174,15 @@ async function loadCMSContent() {
                 document.getElementById("cms-business-name");
 
             if (element) {
-
                 element.textContent = businessName;
-
             }
 
         }
 
+
+        // =========================
+        // UPDATE HERO
+        // =========================
 
         if (heroTitle) {
 
@@ -157,13 +190,10 @@ async function loadCMSContent() {
                 document.getElementById("cms-hero-title");
 
             if (element) {
-
                 element.textContent = heroTitle;
-
             }
 
         }
-
 
         if (heroText) {
 
@@ -171,125 +201,50 @@ async function loadCMSContent() {
                 document.getElementById("cms-hero-text");
 
             if (element) {
-
                 element.textContent = heroText;
-
             }
 
         }
 
 
-        // -------------------------
-        // SERVICES
-        // -------------------------
+        // =========================
+        // UPDATE SERVICES
+        // =========================
 
-        const servicesResponse =
-            await fetch(
-                "https://api.github.com/repos/fdkzg/noir-barber/contents/content/services"
-            );
+        updateService(
+            1,
+            service1Name,
+            service1Description,
+            service1Price
+        );
 
-        if (!servicesResponse.ok) {
+        updateService(
+            2,
+            service2Name,
+            service2Description,
+            service2Price
+        );
 
-            throw new Error("Could not load CMS services.");
+        updateService(
+            3,
+            service3Name,
+            service3Description,
+            service3Price
+        );
 
-        }
+        updateService(
+            4,
+            service4Name,
+            service4Description,
+            service4Price
+        );
 
-        const serviceFiles = await servicesResponse.json();
-
-        const servicesList =
-            document.getElementById("cms-services-list");
-
-        if (!servicesList) return;
-
-
-        servicesList.innerHTML = "";
-
-
-        let serviceNumber = 1;
-
-
-        for (const file of serviceFiles) {
-
-            if (file.type !== "file") continue;
-
-            const fileResponse =
-                await fetch(file.download_url);
-
-            if (!fileResponse.ok) continue;
-
-            const serviceText =
-                await fileResponse.text();
-
-
-            function getServiceValue(key) {
-
-                const line = serviceText
-                    .split("\n")
-                    .find(line =>
-                        line.trim().startsWith(key + ":")
-                    );
-
-                if (!line) return "";
-
-                return line
-                    .substring(line.indexOf(":") + 1)
-                    .trim();
-
-            }
-
-
-            const name =
-                getServiceValue("name");
-
-            const description =
-                getServiceValue("description");
-
-            const price =
-                getServiceValue("price");
-
-
-            if (!name) continue;
-
-
-            const service =
-                document.createElement("article");
-
-            service.className =
-                "service reveal";
-
-
-            service.innerHTML = `
-                <div class="service-number">
-                    ${String(serviceNumber).padStart(2, "0")}
-                </div>
-
-                <div class="service-main">
-
-                    <h3>${name}</h3>
-
-                    <p>${description}</p>
-
-                </div>
-
-                <div class="service-price">
-
-                    <span>from</span>
-
-                    ${price}
-
-                </div>
-            `;
-
-
-            servicesList.appendChild(service);
-
-            serviceNumber++;
-
-        }
-
-
-        // Activate reveal animations
-        setupReveal();
+        updateService(
+            5,
+            service5Name,
+            service5Description,
+            service5Price
+        );
 
 
     } catch (error) {
@@ -304,5 +259,64 @@ async function loadCMSContent() {
 }
 
 
-// Start CMS loading
+// =========================
+// SERVICE UPDATE FUNCTION
+// =========================
+
+function updateService(
+    number,
+    name,
+    description,
+    price
+) {
+
+    const service = document.querySelector(
+        `[data-service="${number}"]`
+    );
+
+    if (!service) return;
+
+
+    if (name) {
+
+        const element =
+            service.querySelector(".cms-service-name");
+
+        if (element) {
+            element.textContent = name;
+        }
+
+    }
+
+
+    if (description) {
+
+        const element =
+            service.querySelector(".cms-service-description");
+
+        if (element) {
+            element.textContent = description;
+        }
+
+    }
+
+
+    if (price) {
+
+        const element =
+            service.querySelector(".cms-service-price");
+
+        if (element) {
+            element.textContent = price;
+        }
+
+    }
+
+}
+
+
+// =========================
+// START CMS
+// =========================
+
 loadCMSContent();
