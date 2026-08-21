@@ -16,7 +16,7 @@
         <nav class="navbar">
             <a href="#home" class="logo">
                 NOIR
-                <span>BARBER STUDIO</span>
+                <span id="cms-business-name">BARBER STUDIO</span>
             </a>
             <button class="menu-toggle" id="menu-toggle" aria-label="Open navigation">
                 <span></span>
@@ -535,26 +535,38 @@
 
                 const yaml = await response.text();
 
-                const getValue = (key) => {
-                    const match = yaml.match(new RegExp("^" + key + ":\\s*[\\\"]?(.+?)[\\\"]?\\s*$", "m"));
-                    return match ? match[1].replace(/^["']|["']$/g, "").trim() : null;
-                };
+                function getValue(key) {
+                    const line = yaml.split("\n").find(line =>
+                        line.trim().startsWith(key + ":")
+                    );
+
+                    if (!line) return null;
+
+                    return line
+                        .substring(line.indexOf(":") + 1)
+                        .trim()
+                        .replace(/^["']|["']$/g, "");
+                }
 
                 const businessName = getValue("business_name");
                 const heroTitle = getValue("hero_title");
                 const heroText = getValue("hero_text");
 
                 if (businessName) {
-                    document.getElementById("cms-business-name").textContent = businessName;
+                    const element = document.getElementById("cms-business-name");
+                    if (element) element.textContent = businessName;
                 }
 
                 if (heroTitle) {
-                    document.getElementById("cms-hero-title").textContent = heroTitle;
+                    const element = document.getElementById("cms-hero-title");
+                    if (element) element.textContent = heroTitle;
                 }
 
                 if (heroText) {
-                    document.getElementById("cms-hero-text").textContent = heroText;
+                    const element = document.getElementById("cms-hero-text");
+                    if (element) element.textContent = heroText;
                 }
+
             } catch (error) {
                 console.error("CMS content could not be loaded:", error);
             }
