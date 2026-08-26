@@ -1,3 +1,52 @@
-business_name: CMS TEST — NOIR BARBER
-hero_title: THE WEBSITE IS NOW CMS CONTROLLED
-hero_text: THIS TEXT CAME DIRECTLY FROM THE CMS.
+business_name: "CMS TEST — NOIR BARBER"
+
+hero_title: "THE WEBSITE IS NOW CMS CONTROLLED"
+
+hero_text: "THIS TEXT CAME DIRECTLY FROM THE CMS."
+
+services:
+  - name: "Signature Haircut"
+    description: "A tailored haircut finished with styling and attention to every detail."
+    price: "€30"
+
+  - name: "Skin Fade"
+    description: "Clean, precise fading blended perfectly into your chosen style."
+    price: "€35"
+
+  - name: "Beard Sculpt"
+    description: "Shape, trim and define your beard for a clean and balanced finish."
+    price: "€20"
+
+  - name: "Hair & Beard"
+    description: "Our complete grooming experience, combining haircut and beard service."
+    price: "€45"
+
+  - name: "Classic Shave"
+    description: "Traditional hot towel treatment followed by a close, smooth shave."
+    price: "€25"
+
+team:
+  - name: "Alex Morgan"
+    role: "Founder & Master Barber"
+    image: "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=900&q=85"
+
+  - name: "Daniel Reed"
+    role: "Senior Barber"
+    image: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=900&q=85"
+
+  - name: "Marcus Cole"
+    role: "Barber & Stylist"
+    image: "https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?auto=format&fit=crop&w=900&q=85"
+
+gallery:
+  - image: "https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?auto=format&fit=crop&w=1200&q=85"
+    alt: "Modern barber styling"
+
+  - image: "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=900&q=85"
+    alt: "Barber haircut"
+
+  - image: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=900&q=85"
+    alt: "Barber styling"
+
+  - image: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1200&q=85"
+    alt: "Barber shop interior"
